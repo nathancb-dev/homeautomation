@@ -1,4 +1,5 @@
 const mongoose = require("../mongoose");
+const utils = require('../../utils');
 
 const HouseSchema = new mongoose.Schema({
     name: {
@@ -11,11 +12,15 @@ const HouseSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: new Date()
+    },
+    updateVersion: {
+        type: Number
     }
 });
 
 HouseSchema.pre('save', async function (next) {
     this.updatedAt = new Date();
+    this.updatedVersion = utils.getNextUpdateVersion();
     next();
 });
 

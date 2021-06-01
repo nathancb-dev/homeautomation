@@ -5,6 +5,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const authConfig = require('../config/auth')
 
 const User = require('../db/models/Users');
+const Role = require('../db/models/Roles');
 
 const generateToken = (params = {}) => {
     return jwt.sign(params, authConfig.hash, {
@@ -14,14 +15,23 @@ const generateToken = (params = {}) => {
 
 router.post('/register', async (req, res) => {
 
-    const { username } = req.body;
+    const { username, roles } = req.body;
 
     try {
 
         if (await User.findOne({ username }))
             return res.status(400).send({ code: '01', err: 'User already exists' });
 
-        const user = await User.create(req.body);
+        for (const k in roles) {
+
+            const roleId = roles[k];
+
+            if (!await Role.findById(roleId))
+                return res.status(401).send({ code: '13', err: 'Role not found' });
+
+        }
+
+        const user = await (await User.create(req.body)).populate("roles").execPopulate();
 
         user.password = undefined;
 
@@ -29,6 +39,25 @@ router.post('/register', async (req, res) => {
 
     } catch (err) {
         return res.status(400).send({ code: '02', err: 'Registration failed' });
+    }
+
+});
+
+router.get('/user', authMiddleware, async (req, res) => {
+
+    const { filter } = req.body;
+
+    try {
+
+        const users = await User.find((filter ? filter : {})).populate('roles');
+
+        if (!users)
+            return res.status(401).send({ code: '03', err: 'User not found' });
+
+        return res.send({ users });
+
+    } catch (err) {
+        return res.status(400).send({ code: '16', err: 'Get registers failed' });
     }
 
 });
@@ -88,13 +117,25 @@ router.post('/change_password', authMiddleware, async (req, res) => {
 
 });
 
-router.post('/update_user', authMiddleware, async (req, res) => {
+router.put('/user', authMiddleware, async (req, res) => {
 
-    const { username, name, roles } = req.body;
+    const { _id, username, name, roles } = req.body;
 
     try {
 
-        const user = await User.findOneAndUpdate({ username }, { name, roles }, { new: true });
+        if (await User.findOne({ username, _id: { $ne: _id } }))
+            return res.status(400).send({ code: '01', err: 'User already exists' });
+
+        for (const k in roles) {
+
+            const roleId = roles[k];
+
+            if (!await Role.findById(roleId))
+                return res.status(401).send({ code: '13', err: 'Role not found' });
+
+        }
+
+        const user = await User.findByIdAndUpdate(_id, { username, name, roles }, { new: true }).populate('roles');
 
         if (!user)
             return res.status(401).send({ code: '03', err: 'User not found' });
@@ -105,6 +146,25 @@ router.post('/update_user', authMiddleware, async (req, res) => {
         return res.status(401).send({ code: '06', err: 'Update user error' });
     }
 
-})
+});
+
+router.delete('/user', authMiddleware, async (req, res) => {
+
+    const { _id } = req.body;
+
+    try {
+
+        const user = await User.findByIdAndDelete(_id).select("-password").populate('roles');
+
+        if (!user)
+            return res.status(401).send({ code: '03', err: 'User not found' });
+
+        res.send({ user });
+
+    } catch (err) {
+        return res.status(400).send({ code: '15', err: 'Delete failed' });
+    }
+
+});
 
 module.exports = app => app.use('/auth', router);

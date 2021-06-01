@@ -1,9 +1,11 @@
 const mongoose = require("../mongoose");
+const utils = require('../../utils');
 
 const RoleSchema = new mongoose.Schema({
-    role: {
+    roleName: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     createdAt: {
         type: Date,
@@ -12,11 +14,15 @@ const RoleSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: new Date()
+    },
+    updateVersion: {
+        type: Number
     }
 });
 
 RoleSchema.pre('save', async function (next) {
     this.updatedAt = new Date();
+    this.updatedVersion = utils.getNextUpdateVersion();
     next();
 });
 

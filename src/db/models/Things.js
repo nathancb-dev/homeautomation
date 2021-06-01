@@ -1,4 +1,5 @@
 const mongoose = require("../mongoose");
+const utils = require('../../utils');
 
 const ThingSchema = new mongoose.Schema({
     thingInfoId: {
@@ -34,11 +35,15 @@ const ThingSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: new Date()
+    },
+    updateVersion: {
+        type: Number
     }
 });
 
 ThingSchema.pre('save', async function (next) {
     this.updatedAt = new Date();
+    this.updatedVersion = utils.getNextUpdateVersion();
     next();
 });
 

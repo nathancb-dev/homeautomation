@@ -1,4 +1,5 @@
 const mongoose = require("../mongoose");
+const utils = require('../../utils');
 const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
@@ -28,6 +29,9 @@ const UserSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: new Date()
+    },
+    updateVersion: {
+        type: Number
     }
 });
 
@@ -35,6 +39,7 @@ UserSchema.pre('save', async function (next) {
     const hash = await bcrypt.hash(this.password, 10);
     this.password = hash;
     this.updatedAt = new Date();
+    this.updateVersion = utils.getNextUpdateVersion();
 
     next();
 });

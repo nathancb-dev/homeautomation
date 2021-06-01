@@ -8,3 +8,9 @@
 08 Token error
 09 Token malformated
 10 Invalid token
+11 Role already exists
+12 New role name already exists
+13 Role not found
+14 Update failed
+15 Delete failed
+16 Get registers failed
