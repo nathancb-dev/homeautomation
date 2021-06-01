@@ -25,7 +25,7 @@ const DeviceSchema = new mongoose.Schema({
 
 DeviceSchema.pre('save', async function (next) {
     this.updatedAt = new Date();
-    this.updatedVersion = utils.getNextUpdateVersion();
+    this.updateVersion = utils.getNextUpdateVersion();
     next();
 });
 

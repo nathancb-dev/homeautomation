@@ -25,7 +25,7 @@ const RoomSchema = new mongoose.Schema({
 
 RoomSchema.pre('save', async function (next) {
     this.updatedAt = new Date();
-    this.updatedVersion = utils.getNextUpdateVersion();
+    this.updateVersion = utils.getNextUpdateVersion();
     next();
 });
 

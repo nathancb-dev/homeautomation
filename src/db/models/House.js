@@ -20,7 +20,7 @@ const HouseSchema = new mongoose.Schema({
 
 HouseSchema.pre('save', async function (next) {
     this.updatedAt = new Date();
-    this.updatedVersion = utils.getNextUpdateVersion();
+    this.updateVersion = utils.getNextUpdateVersion();
     next();
 });
 

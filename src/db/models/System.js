@@ -17,7 +17,7 @@ const SystemSchema = new mongoose.Schema({
 
 SystemSchema.pre('save', async function (next) {
     this.updatedAt = new Date();
-    this.updatedVersion = utils.getNextUpdateVersion();
+    this.updateVersion = utils.getNextUpdateVersion();
     next();
 });
 
