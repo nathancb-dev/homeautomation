@@ -14,3 +14,4 @@
 14 Update failed
 15 Delete failed
 16 Get registers failed
+17 House data not found

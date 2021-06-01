@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
         const roles = await Role.find((filter ? filter : {}));
 
         if (!roles)
-            return res.status(401).send({ code: '13', err: 'Role not found' });
+            return res.status(400).send({ code: '13', err: 'Role not found' });
 
         return res.send({ roles });
 
@@ -55,7 +55,7 @@ router.put('/', async (req, res) => {
         const role = await Role.findByIdAndUpdate(_id, { roleName }, { new: true });
 
         if (!role)
-            return res.status(401).send({ code: '13', err: 'Role not found' });
+            return res.status(400).send({ code: '13', err: 'Role not found' });
 
         return res.send({ role });
 
@@ -74,7 +74,7 @@ router.delete('/', async (req, res) => {
         const role = await Role.findByIdAndDelete(_id);
 
         if (!role)
-            return res.status(401).send({ code: '13', err: 'Role not found' });
+            return res.status(400).send({ code: '13', err: 'Role not found' });
 
         return res.send({ role });
 

@@ -11,5 +11,6 @@ app.get("/", (req, res) => {
 
 require('./controllers/authController')(app);
 require('./controllers/rolesController')(app);
+require('./controllers/houseController')(app);
 
 app.listen(3000, () => { console.log("server stared at port 3000. http://localhost:3000") });

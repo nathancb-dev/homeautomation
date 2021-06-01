@@ -27,7 +27,7 @@ router.post('/register', async (req, res) => {
             const roleId = roles[k];
 
             if (!await Role.findById(roleId))
-                return res.status(401).send({ code: '13', err: 'Role not found' });
+                return res.status(400).send({ code: '13', err: 'Role not found' });
 
         }
 
@@ -52,7 +52,7 @@ router.get('/user', authMiddleware, async (req, res) => {
         const users = await User.find((filter ? filter : {})).populate('roles');
 
         if (!users)
-            return res.status(401).send({ code: '03', err: 'User not found' });
+            return res.status(400).send({ code: '03', err: 'User not found' });
 
         return res.send({ users });
 
@@ -71,7 +71,7 @@ router.post('/authenticate', async (req, res) => {
         const user = await User.findOne({ username }).select('+password');
 
         if (!user)
-            return res.status(401).send({ code: '03', err: 'User not found' });
+            return res.status(400).send({ code: '03', err: 'User not found' });
 
         if (!await bcrypt.compare(password, user.password))
             return res.status(401).send({ code: '04', err: 'Invalid Password' });
@@ -98,7 +98,7 @@ router.post('/change_password', authMiddleware, async (req, res) => {
         const user = await User.findOne({ username }).select('+password');
 
         if (!user)
-            return res.status(401).send({ code: '03', err: 'User not found' });
+            return res.status(400).send({ code: '03', err: 'User not found' });
 
         if (!await bcrypt.compare(password, user.password))
             return res.status(401).send({ code: '04', err: 'Invalid Password' });
@@ -112,7 +112,7 @@ router.post('/change_password', authMiddleware, async (req, res) => {
         res.send({ user });
 
     } catch (err) {
-        return res.status(401).send({ code: '05', err: 'Change password error' });
+        return res.status(400).send({ code: '05', err: 'Change password error' });
     }
 
 });
@@ -131,19 +131,19 @@ router.put('/user', authMiddleware, async (req, res) => {
             const roleId = roles[k];
 
             if (!await Role.findById(roleId))
-                return res.status(401).send({ code: '13', err: 'Role not found' });
+                return res.status(400).send({ code: '13', err: 'Role not found' });
 
         }
 
         const user = await User.findByIdAndUpdate(_id, { username, name, roles }, { new: true }).populate('roles');
 
         if (!user)
-            return res.status(401).send({ code: '03', err: 'User not found' });
+            return res.status(400).send({ code: '03', err: 'User not found' });
 
         res.send({ user });
 
     } catch (err) {
-        return res.status(401).send({ code: '06', err: 'Update user error' });
+        return res.status(400).send({ code: '06', err: 'Update user error' });
     }
 
 });
@@ -157,7 +157,7 @@ router.delete('/user', authMiddleware, async (req, res) => {
         const user = await User.findByIdAndDelete(_id).select("-password").populate('roles');
 
         if (!user)
-            return res.status(401).send({ code: '03', err: 'User not found' });
+            return res.status(400).send({ code: '03', err: 'User not found' });
 
         res.send({ user });
 
