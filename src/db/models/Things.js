@@ -29,16 +29,16 @@ const ThingSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: new Date()
     },
     updatedAt: {
         type: Date,
-        default: Date.now
+        default: new Date()
     }
 });
 
-ThingSchema.pre('save', async (next) => {
-    this.updatedAt = Date.now;
+ThingSchema.pre('save', async function (next) {
+    this.updatedAt = new Date();
     next();
 });
 

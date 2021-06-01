@@ -7,16 +7,16 @@ const RoleSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: new Date()
     },
     updatedAt: {
         type: Date,
-        default: Date.now
+        default: new Date()
     }
 });
 
-RoleSchema.pre('save', async (next) => {
-    this.updatedAt = Date.now;
+RoleSchema.pre('save', async function (next) {
+    this.updatedAt = new Date();
     next();
 });
 

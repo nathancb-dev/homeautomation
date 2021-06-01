@@ -11,16 +11,16 @@ const RoomSchema = new mongoose.Schema({
     }],
     createdAt: {
         type: Date,
-        default: Date.now
+        default: new Date()
     },
     updatedAt: {
         type: Date,
-        default: Date.now
+        default: new Date()
     }
 });
 
-RoomSchema.pre('save', async (next) => {
-    this.updatedAt = Date.now;
+RoomSchema.pre('save', async function (next) {
+    this.updatedAt = new Date();
     next();
 });
 

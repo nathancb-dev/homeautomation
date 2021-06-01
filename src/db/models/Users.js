@@ -23,18 +23,18 @@ const UserSchema = new mongoose.Schema({
     }],
     createdAt: {
         type: Date,
-        default: Date.now
+        default: new Date()
     },
     updatedAt: {
         type: Date,
-        default: Date.now
+        default: new Date()
     }
 });
 
-UserSchema.pre('save', async (next) => {
-    const hash = await bcrypt.hash(thi.password, 10);
+UserSchema.pre('save', async function (next) {
+    const hash = await bcrypt.hash(this.password, 10);
     this.password = hash;
-    this.updatedAt = Date.now;
+    this.updatedAt = new Date();
 
     next();
 });

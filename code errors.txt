@@ -1,0 +1,10 @@
+01 User already exists
+02 Registration failed
+03 User not found
+04 Invalid password
+05 Change password error
+06 Update user error
+07 No token provided
+08 Token error
+09 Token malformated
+10 Invalid token

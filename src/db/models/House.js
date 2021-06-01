@@ -6,16 +6,16 @@ const HouseSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: new Date()
     },
     updatedAt: {
         type: Date,
-        default: Date.now
+        default: new Date()
     }
 });
 
-HouseSchema.pre('save', async (next) => {
-    this.updatedAt = Date.now;
+HouseSchema.pre('save', async function (next) {
+    this.updatedAt = new Date();
     next();
 });
 
