@@ -1,5 +1,4 @@
 const mongoose = require("../mongoose");
-const utils = require('../../utils');
 
 const RoleSchema = new mongoose.Schema({
     roleName: {

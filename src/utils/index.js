@@ -1,7 +1,7 @@
-var updateVersion = 0;
+//var updateVersion = 0;
 
 module.exports = {
-    getNextUpdateVersion: () => {
-        return updateVersion++;
-    }
+    //getNextUpdateVersion: () => {
+    //    return updateVersion++;
+    //}
 }

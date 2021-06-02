@@ -1,5 +1,4 @@
 const mongoose = require("../mongoose");
-const utils = require('../../utils');
 
 const DeviceSchema = new mongoose.Schema({
     deviceInfoId: {
