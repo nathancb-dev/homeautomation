@@ -13,20 +13,7 @@ const DeviceSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: new Date()
-    },
-    updatedAt: {
-        type: Date,
-        default: new Date()
-    },
-    updateVersion: {
-        type: Number
     }
-});
-
-DeviceSchema.pre('save', async function (next) {
-    this.updatedAt = new Date();
-    this.updateVersion = utils.getNextUpdateVersion();
-    next();
 });
 
 const Device = mongoose.model('Device', DeviceSchema);

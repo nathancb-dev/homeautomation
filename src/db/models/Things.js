@@ -31,20 +31,7 @@ const ThingSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: new Date()
-    },
-    updatedAt: {
-        type: Date,
-        default: new Date()
-    },
-    updateVersion: {
-        type: Number
     }
-});
-
-ThingSchema.pre('save', async function (next) {
-    this.updatedAt = new Date();
-    this.updateVersion = utils.getNextUpdateVersion();
-    next();
 });
 
 const Thing = mongoose.model('Thing', ThingSchema);

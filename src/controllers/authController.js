@@ -105,7 +105,7 @@ router.post('/change_password', authMiddleware, async (req, res) => {
 
         user.password = new_password;
 
-        await user.save();
+        await user.save(); // need be save method because the mongo middleware to encrypt password (pre('save', func))
 
         user.password = undefined;
 

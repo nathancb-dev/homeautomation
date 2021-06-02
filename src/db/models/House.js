@@ -8,20 +8,7 @@ const HouseSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: new Date()
-    },
-    updatedAt: {
-        type: Date,
-        default: new Date()
-    },
-    updateVersion: {
-        type: Number
     }
-});
-
-HouseSchema.pre('save', async function (next) {
-    this.updatedAt = new Date();
-    this.updateVersion = utils.getNextUpdateVersion();
-    next();
 });
 
 const House = mongoose.model('House', HouseSchema);
