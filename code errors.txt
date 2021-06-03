@@ -15,3 +15,6 @@
 15 Delete failed
 16 Get registers failed
 17 House data not found
+18 Device not found
+19 Log data not found
+20 Thing not found

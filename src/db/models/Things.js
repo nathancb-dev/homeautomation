@@ -3,9 +3,10 @@ const mongoose = require("../mongoose");
 const ThingSchema = new mongoose.Schema({
     thingInfoId: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
-    name: {
+    thingName: {
         type: String,
         required: true
     },
