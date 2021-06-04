@@ -44,4 +44,23 @@ router.put('/', async (req, res) => {
 
 });
 
+router.delete('/', async (req, res) => {
+
+    const { _id } = req.body;
+
+    try {
+
+        const device = await Device.findByIdAndDelete(_id);
+
+        if (!device)
+            return res.status(400).send({ code: '18', err: 'Device not found' });
+
+        return res.send({ device });
+
+    } catch (err) {
+        return res.status(400).send({ code: '15', err: 'Delete failed' });
+    }
+
+});
+
 module.exports = app => app.use('/devices', router);

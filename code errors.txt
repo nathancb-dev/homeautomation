@@ -18,3 +18,6 @@
 18 Device not found
 19 Log data not found
 20 Thing not found
+21 Room not found
+22 Thing already in room
+23 Thing not in room

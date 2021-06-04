@@ -5,9 +5,17 @@ const RoomSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    icon: {
+        type: String,
+        required: true
+    },
     things: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Thing'
+    }],
+    roles: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Role'
     }],
     createdAt: {
         type: Date,

@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 
     try {
 
-        const things = await Thing.find((filter ? filter : {}));
+        const things = await Thing.find((filter ? filter : {})).populate(['roles', 'device']);
 
         if (!things)
             return res.status(400).send({ code: '20', err: 'Thing not found' });
@@ -40,7 +40,7 @@ router.put('/', async (req, res) => {
 
         }
 
-        const thing = await Thing.findOneAndUpdate(_id, { thingName, icon, valueType, roles }, { new: true });
+        const thing = await Thing.findOneAndUpdate(_id, { thingName, icon, valueType, roles }, { new: true }).populate(['roles', 'device']);
 
         if (!thing)
             return res.status(400).send({ code: '20', err: 'Thing not found' });
@@ -50,6 +50,25 @@ router.put('/', async (req, res) => {
     } catch (err) {
         console.log(err)
         return res.status(400).send({ code: '14', err: 'Update failed' });
+    }
+
+});
+
+router.delete('/', async (req, res) => {
+
+    const { _id } = req.body;
+
+    try {
+
+        const thing = await Thing.findByIdAndDelete(_id).populate(['roles', 'device']);
+
+        if (!thing)
+            return res.status(400).send({ code: '20', err: 'Thing not found' });
+
+        return res.send({ thing });
+
+    } catch (err) {
+        return res.status(400).send({ code: '15', err: 'Delete failed' });
     }
 
 });

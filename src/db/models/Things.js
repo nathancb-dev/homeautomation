@@ -23,7 +23,7 @@ const ThingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Role'
     }],
-    deviceId: {
+    device: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Device',
         required: true
