@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const authMiddleware = require('../middlewares/authMiddleware');
+const utils = require('../utils');
 
 const Role = require('../db/models/Roles');
 
@@ -26,18 +27,21 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
 
-    const { roleName } = req.body;
+    const { roleName, permissionLevel } = req.body;
 
     try {
 
         if (await Role.findOne({ roleName }))
             return res.status(400).send({ code: '11', err: 'Role already exists' });
 
-        const role = await Role.create(req.body);
+        const role = await Role.create({ roleName, permissionLevel });
 
-        return res.send({ role });
+        const updatedRoles = await utils.updatePermissionsLevels(role._id, permissionLevel);
+
+        return res.send({ role, updatedRoles });
 
     } catch (err) {
+        console.log(err)
         return res.status(400).send({ code: '02', err: 'Registration failed' });
     }
 
@@ -45,19 +49,21 @@ router.post('/', async (req, res) => {
 
 router.put('/', async (req, res) => {
 
-    const { _id, roleName } = req.body;
+    const { _id, roleName, permissionLevel } = req.body;
 
     try {
 
-        if (await Role.findOne({ roleName }))
+        if (await Role.findOne({ roleName, permissionLevel }))
             return res.status(400).send({ code: '12', err: 'New role name already exists' });
 
-        const role = await Role.findByIdAndUpdate(_id, { roleName }, { new: true });
+        const role = await Role.findByIdAndUpdate(_id, { roleName, permissionLevel }, { new: true });
+
+        const updatedRoles = await utils.updatePermissionsLevels(_id, permissionLevel);
 
         if (!role)
             return res.status(400).send({ code: '13', err: 'Role not found' });
 
-        return res.send({ role });
+        return res.send({ role, updatedRoles });
 
     } catch (err) {
         return res.status(400).send({ code: '14', err: 'Update failed' });

@@ -2,6 +2,7 @@ const router = require('express').Router();
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const Device = require('../db/models/Devices');
+const Thing = require('../db/models/Things');
 
 router.use(authMiddleware);
 
@@ -50,10 +51,16 @@ router.delete('/', async (req, res) => {
 
     try {
 
-        const device = await Device.findByIdAndDelete(_id);
+        const device = await Device.findById(_id);
 
         if (!device)
             return res.status(400).send({ code: '18', err: 'Device not found' });
+
+        const things = await Thing.find({ device: _id });
+
+        for (const k in things) {
+            await Thing.findByIdAndDelete(things[k]._id);
+        }
 
         return res.send({ device });
 

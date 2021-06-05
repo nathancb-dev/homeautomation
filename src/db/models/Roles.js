@@ -6,6 +6,10 @@ const RoleSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    permissionLevel: {
+        type: Number,
+        required: true
+    },
     createdAt: {
         type: Date,
         default: new Date()
