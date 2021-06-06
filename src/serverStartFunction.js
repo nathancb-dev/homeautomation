@@ -11,13 +11,18 @@ module.exports = async () => {
     if (!await House.findOne({}))
         await House.create({});
 
-    if (true === false) {
-        if (!await Role.findOne({}))
-            await Role.create({ roleName: "admin", permissionLevel: 99 });
-
-        if (!await User.findOne({}))
-            await User.create({ username: "admin", password: "admin", name: "admin" });
+    let roleAdmin = await Role.findOne({ permissionLevel: 99 });
+    if (!roleAdmin) {
+        roleAdmin = await Role.create({ roleName: "Admin", permissionLevel: 99 });
+        await System.findOneAndUpdate({}, { role: roleAdmin._id });
     }
+
+    let user = await User.findOne({ roles: roleAdmin._id })
+    if (!user) {
+        user = await User.create({ username: "admin", password: "admin", name: "admin" });
+        await System.findOneAndUpdate({}, { user: user._id });
+    }
+    await User.findByIdAndUpdate(user._id, { roles: [roleAdmin._id] });
 
     console.log("Inital data ok");
 }

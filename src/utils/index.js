@@ -8,9 +8,6 @@ module.exports = {
         let permissionLevel = rolePermissionLevel;
         let updatedRole;
 
-        const session = await Role.startSession();
-        session.startTransaction();
-
         try {
 
             do {
@@ -20,11 +17,11 @@ module.exports = {
                         permissionLevel: permissionLevel++
                     },
                     {
-                        $inc: { permissionLevel: 1 }
+                        permissionLevel
                     },
                     {
                         new: true,
-                        session
+                        runValidators: true
                     });
 
                 if (updatedRole)
@@ -32,17 +29,22 @@ module.exports = {
 
             } while (updatedRole);
 
-            await session.commitTransaction();
-
         } catch (err) {
 
-            await session.abortTransaction();
+            for (const k in updatedRole) {
+                const role = updatedRole[k];
+
+                await Role.findOneAndUpdate(
+                    {
+                        _id: role._id,
+                    },
+                    {
+                        $inc: { permissionLevel: -1 }
+                    });
+
+            }
+
             throw err;
-
-        } finally {
-
-            session.endSession();
-
         }
 
         return roles;

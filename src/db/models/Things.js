@@ -30,7 +30,7 @@ const ThingSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: new Date()
+        default: Date.now
     }
 });
 

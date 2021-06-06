@@ -28,20 +28,21 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
 
     const { roleName, permissionLevel } = req.body;
+    let role;
 
     try {
 
         if (await Role.findOne({ roleName }))
             return res.status(400).send({ code: '11', err: 'Role already exists' });
 
-        const role = await Role.create({ roleName, permissionLevel });
+        role = await Role.create({ roleName, permissionLevel });
 
         const updatedRoles = await utils.updatePermissionsLevels(role._id, permissionLevel);
 
         return res.send({ role, updatedRoles });
 
     } catch (err) {
-        console.log(err)
+        await Role.findByIdAndDelete(role._id);
         return res.status(400).send({ code: '02', err: 'Registration failed' });
     }
 
@@ -53,10 +54,10 @@ router.put('/', async (req, res) => {
 
     try {
 
-        if (await Role.findOne({ roleName, permissionLevel }))
+        if (await Role.findOne({ roleName }))
             return res.status(400).send({ code: '12', err: 'New role name already exists' });
 
-        const role = await Role.findByIdAndUpdate(_id, { roleName, permissionLevel }, { new: true });
+        const role = await Role.findByIdAndUpdate(_id, { roleName, permissionLevel }, { new: true, runValidators: true });
 
         const updatedRoles = await utils.updatePermissionsLevels(_id, permissionLevel);
 
