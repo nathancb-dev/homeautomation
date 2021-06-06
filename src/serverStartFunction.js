@@ -5,24 +5,23 @@ const User = require('./db/models/Users');
 
 module.exports = async () => {
 
-    if (!await System.findOne({}))
-        await System.create({});
+    let system = await System.findOne({});
+    if (!system)
+        system = await System.create({});
 
     if (!await House.findOne({}))
         await House.create({});
 
-    let roleAdmin = await Role.findOne({ permissionLevel: 99 });
-    if (!roleAdmin) {
-        roleAdmin = await Role.create({ roleName: "Admin", permissionLevel: 99 });
-        await System.findOneAndUpdate({}, { role: roleAdmin._id });
+    let role = await Role.findById(system.role);
+    if (!role) {
+        role = await Role.create({ roleName: "System", permissionLevel: 99 });
+        await System.findOneAndUpdate({}, { role: role._id });
     }
 
-    let user = await User.findOne({ roles: roleAdmin._id })
-    if (!user) {
-        user = await User.create({ username: "admin", password: "admin", name: "admin" });
+    if (!await User.findById(system.user)) {
+        const user = await User.create({ username: "admin", password: "admin", name: "Administrator", roles: [role._id] });
         await System.findOneAndUpdate({}, { user: user._id });
     }
-    await User.findByIdAndUpdate(user._id, { roles: [roleAdmin._id] });
 
     console.log("Inital data ok");
 }
