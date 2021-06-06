@@ -21,3 +21,7 @@
 21 Room not found
 22 Thing already in room
 23 Thing not in room
+24 The permissionLevel of system role can't be updated
+25 The system role can't be deleted
+26 The system user can't be deleted
+27 The system role can't be removed from system user

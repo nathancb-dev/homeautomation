@@ -6,6 +6,7 @@ const authConfig = require('../config/auth')
 
 const User = require('../db/models/Users');
 const Role = require('../db/models/Roles');
+const System = require('../db/models/System');
 
 const generateToken = (params = {}) => {
     return jwt.sign(params, authConfig.hash, {
@@ -135,6 +136,11 @@ router.put('/user', authMiddleware, async (req, res) => {
 
         }
 
+        const system = await System.findOne({ user: _id });
+        if (system)
+            if (!roles.find((x) => x == system.role))
+                return res.status(400).send({ code: '27', err: "The system role can't be removed from system user" });
+
         const user = await User.findByIdAndUpdate(_id, { username, name, roles }, { new: true }).populate('roles');
 
         if (!user)
@@ -153,6 +159,9 @@ router.delete('/user', authMiddleware, async (req, res) => {
     const { _id } = req.body;
 
     try {
+
+        if (await System.findOne({ user: _id }))
+            return res.status(400).send({ code: '26', err: "The system user can't be deleted" });
 
         const user = await User.findByIdAndDelete(_id).select("-password").populate('roles');
 

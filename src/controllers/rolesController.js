@@ -3,6 +3,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const utils = require('../utils');
 
 const Role = require('../db/models/Roles');
+const System = require('../db/models/System');
 
 router.use(authMiddleware);
 
@@ -57,6 +58,11 @@ router.put('/', async (req, res) => {
         if (await Role.findOne({ roleName }))
             return res.status(400).send({ code: '12', err: 'New role name already exists' });
 
+        if (await System.findOne({ role: _id }))
+            if (!(await Role.findById(_id)).permissionLevel === permissionLevel)
+                return res.status(400).send({ code: '24', err: "The permissionLevel of system role can't be updated" });
+
+
         const role = await Role.findByIdAndUpdate(_id, { roleName, permissionLevel }, { new: true, runValidators: true });
 
         const updatedRoles = await utils.updatePermissionsLevels(_id, permissionLevel);
@@ -77,6 +83,9 @@ router.delete('/', async (req, res) => {
     const { _id } = req.body;
 
     try {
+
+        if (await System.findOne({ user: _id }))
+            return res.status(400).send({ code: '25', err: "The system role can't be deleted" });
 
         const role = await Role.findByIdAndDelete(_id);
 
