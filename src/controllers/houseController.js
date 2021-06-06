@@ -30,10 +30,8 @@ router.put('/', async (req, res) => {
 
         let house = await House.findOneAndUpdate({}, { houseName }, { new: true });
 
-        if (house)
-            return res.send({ house });
-
-        house = await House.create({ houseName });
+        if (!house)
+            return res.status(400).send({ code: '17', err: 'House data not found' });
 
         return res.send({ house });
 

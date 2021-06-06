@@ -8,12 +8,42 @@ module.exports = {
         let permissionLevel = rolePermissionLevel;
         let updatedRole;
 
-        do {
-            updatedRole = await Role.findOneAndUpdate({ _id: { $ne: (updatedRole ? updatedRole._id : roleId) }, permissionLevel: permissionLevel++ }, { $inc: { permissionLevel: 1 } }, { new: true });
-            if (updatedRole)
-                roles.push(updatedRole);
+        const session = await Role.startSession();
+        session.startTransaction();
 
-        } while (updatedRole);
+        try {
+
+            do {
+                updatedRole = await Role.findOneAndUpdate(
+                    {
+                        _id: { $ne: (updatedRole ? updatedRole._id : roleId) },
+                        permissionLevel: permissionLevel++
+                    },
+                    {
+                        $inc: { permissionLevel: 1 }
+                    },
+                    {
+                        new: true,
+                        session
+                    });
+
+                if (updatedRole)
+                    roles.push(updatedRole);
+
+            } while (updatedRole);
+
+            await session.commitTransaction();
+
+        } catch (err) {
+
+            await session.abortTransaction();
+            throw err;
+
+        } finally {
+
+            session.endSession();
+
+        }
 
         return roles;
     }

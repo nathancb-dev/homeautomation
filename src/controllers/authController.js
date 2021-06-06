@@ -13,7 +13,34 @@ const generateToken = (params = {}) => {
     });
 }
 
-router.post('/register', async (req, res) => {
+router.post('/authenticate', async (req, res) => {
+
+    const { username, password } = req.body;
+
+    try {
+
+        const user = await User.findOne({ username }).select('+password');
+
+        if (!user)
+            return res.status(400).send({ code: '03', err: 'User not found' });
+
+        if (!await bcrypt.compare(password, user.password))
+            return res.status(401).send({ code: '04', err: 'Invalid Password' });
+
+        user.password = undefined;
+
+        res.send({
+            user,
+            token: generateToken({ userId: user._id })
+        });
+
+    } catch (err) {
+
+    }
+
+});
+
+router.post('/register', authMiddleware, async (req, res) => {
 
     const { username, roles } = req.body;
 
@@ -58,33 +85,6 @@ router.get('/user', authMiddleware, async (req, res) => {
 
     } catch (err) {
         return res.status(400).send({ code: '16', err: 'Get registers failed' });
-    }
-
-});
-
-router.post('/authenticate', async (req, res) => {
-
-    const { username, password } = req.body;
-
-    try {
-
-        const user = await User.findOne({ username }).select('+password');
-
-        if (!user)
-            return res.status(400).send({ code: '03', err: 'User not found' });
-
-        if (!await bcrypt.compare(password, user.password))
-            return res.status(401).send({ code: '04', err: 'Invalid Password' });
-
-        user.password = undefined;
-
-        res.send({
-            user,
-            token: generateToken({ userId: user._id })
-        });
-
-    } catch (err) {
-
     }
 
 });
