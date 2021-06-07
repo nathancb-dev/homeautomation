@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const authMiddleware = require('../middlewares/authMiddleware');
+const authMiddleware = require('../../middlewares/authMiddleware');
 
-const House = require('../db/models/House');
+const House = require('../../db/models/House');
 
 router.use(authMiddleware);
 

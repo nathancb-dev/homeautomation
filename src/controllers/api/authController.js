@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const authMiddleware = require('../middlewares/authMiddleware');
-const authConfig = require('../config/auth')
+const authMiddleware = require('../../middlewares/authMiddleware');
+const authConfig = require('../../config/auth')
 
-const User = require('../db/models/Users');
-const Role = require('../db/models/Roles');
-const System = require('../db/models/System');
+const User = require('../../db/models/Users');
+const Role = require('../../db/models/Roles');
+const System = require('../../db/models/System');
 
 const generateToken = (params = {}) => {
     return jwt.sign(params, authConfig.hash, {

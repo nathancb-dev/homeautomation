@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const authMiddleware = require('../middlewares/authMiddleware');
-const utils = require('../utils');
+const authMiddleware = require('../../middlewares/authMiddleware');
+const utils = require('../../utils');
 
-const Role = require('../db/models/Roles');
-const System = require('../db/models/System');
+const Role = require('../../db/models/Roles');
+const System = require('../../db/models/System');
 
 router.use(authMiddleware);
 
