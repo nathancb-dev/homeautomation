@@ -34,24 +34,13 @@ const app = server => {
 
         const type = socket.handshake.query.type;
 
-        switch (type) {
-            case 'app':
-
-                socket.join(type);
-                socket.data.type = type;
-
-                break;
-            case 'node':
-
-                socket.join(type);
-                socket.data.type = type;
-
-                break;
-            default:
-
-                return next(new Error(JSON.stringify({ code: '10', err: 'Invalid type' })));
+        if (type === 'node') {
+            socket.data.type = type;
+        } else {
+            socket.data.type = 'app';
         }
 
+        socket.join(socket.data.type);
         return next();
 
     }).on('connection', socket => {
