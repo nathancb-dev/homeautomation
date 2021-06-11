@@ -6,8 +6,7 @@ const DeviceSchema = new mongoose.Schema({
         required: true
     },
     deviceName: {
-        type: String,
-        required: true
+        type: String
     },
     createdAt: {
         type: Date,

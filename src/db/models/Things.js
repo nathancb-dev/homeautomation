@@ -7,17 +7,14 @@ const ThingSchema = new mongoose.Schema({
         unique: true
     },
     thingName: {
-        type: String,
-        required: true
+        type: String
     },
     icon: {
-        type: String,
-        required: true
+        type: String
     },
     valueType: {
         type: String,
-        enum: ['string', 'int', 'double'],
-        required: true
+        enum: ['string', 'int', 'double']
     },
     roles: [{
         type: mongoose.Schema.Types.ObjectId,

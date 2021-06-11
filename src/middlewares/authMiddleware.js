@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
 
     const parts = authHeader.split(' ');
 
-    if (!parts.length === 2)
+    if (parts.length !== 2)
         return res.status(401).send({ code: '08', err: 'Token error' })
 
     const [bearer, token] = parts;

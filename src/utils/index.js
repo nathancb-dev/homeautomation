@@ -1,4 +1,6 @@
 const Role = require('../db/models/Roles');
+const Device = require('../db/models/Devices');
+const Thing = require('../db/models/Things');
 
 module.exports = {
 
@@ -48,6 +50,25 @@ module.exports = {
         }
 
         return roles;
+    },
+
+    async checkThingDeviceToCreate(deviceInfoId, thingInfoId) {
+
+        if (!await Thing.findOne({ thingInfoId })) {
+
+            let device = await Device.findOne({ deviceInfoId });
+
+            if (!device) {
+                device = await Device.create({ deviceInfoId });
+            }
+
+            await Thing.create({
+                thingInfoId,
+                device: device._id
+            })
+
+        }
+
     }
 
 }

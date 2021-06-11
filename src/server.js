@@ -1,10 +1,13 @@
 const express = require("express");
 const http = require('http');
-const socker = require("./scoker")
+const mqtt = require("./mqtt");
+const socker = require("./scoker");
+
+mqtt.createServer();
 
 const app = express();
-const server = http.createServer(app);
-socker(server);
+const appServer = http.createServer(app);
+socker.createServer(appServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -16,4 +19,4 @@ app.get("/", (req, res) => {
     res.send("OK");
 })
 
-server.listen(3000, () => { console.log("server stared at port 3000. http://localhost:3000") });
+appServer.listen(3000, () => { console.log("HTTP/WS server stared at port 3000. http://localhost:3000") });
