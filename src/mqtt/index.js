@@ -1,16 +1,14 @@
 const aedes = require('aedes')();
-const mqttManager = require('./mqttManager')
+const mqttManager = require('./mqttManager');
+const aedesServer = require('net').createServer(aedes.handle);
 
-let aedesServer;
-
-const createServer = () => {
-    aedesServer = require('net').createServer(aedes.handle);
+const startServer = () => {
     aedesServer.listen(1883, () => { console.log("MQTT server started at port 1883.") });
     mqttManager(aedes);
 }
 
 module.exports = {
     aedes,
-    createServer,
-    aedesServer
+    aedesServer,
+    startServer
 }

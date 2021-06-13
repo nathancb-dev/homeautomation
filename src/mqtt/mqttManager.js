@@ -1,4 +1,5 @@
 const mqtt_regex = require('mqtt-regex');
+const io = require('../scoker').getIo();
 const utils = require('../utils')
 const state = require('../state');
 
@@ -63,6 +64,8 @@ module.exports = (aedes) => {
                     state.setDeviceConnected(client.id, thingPublishValue.deviceInfoId);
                     break;
             }
+
+            io.emit(packet.topic, packet.payload.toString());
 
         }
 

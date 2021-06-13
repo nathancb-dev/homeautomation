@@ -1,13 +1,11 @@
 const express = require("express");
 const http = require('http');
-const mqtt = require("./mqtt");
-const socker = require("./scoker");
-
-mqtt.createServer();
 
 const app = express();
 const appServer = http.createServer(app);
-socker.createServer(appServer);
+require("./scoker").startServer(appServer);
+
+require("./mqtt").startServer();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

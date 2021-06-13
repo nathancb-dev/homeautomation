@@ -17,9 +17,8 @@ socket.on('disconnect', () => {
     console.log('disconnected')
 })
 
-const mqtt = require('mqtt');
-
-const client = mqtt.connect('mqtt://localhost:1883');
-client.on('connect', ack => {
-console.log('connected mqtt')
+socket.on('has/b/device/lamp1', (value) => {
+    console.log(value)
 });
+
+socket.emit('has.teste', "opa", "ok")

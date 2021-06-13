@@ -1,4 +1,4 @@
-const devicesUp = [];
+let devicesUp = [];
 
 module.exports = {
     setDeviceConnected(clientId, deviceInfoId) {
