@@ -6,7 +6,6 @@ const authMiddleware = require('../middlewares/authMiddleware');
 router.post('/reboot', (req, res) => {
     setTimeout(function () {
         // When NodeJS exits
-        return;
         process.on("exit", function () {
 
             require("child_process").spawn(process.argv.shift(), process.argv, {
