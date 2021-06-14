@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 require('./serverStartFunction')();
-require('./controllers/api')(app);
+require('./controllers')(app);
 
 app.get("/", (req, res) => {
     res.send("OK");
