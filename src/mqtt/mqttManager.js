@@ -1,5 +1,5 @@
 const mqtt_regex = require('mqtt-regex');
-const io = require('../scoker').getIo();
+const io = require('../scoker').io();
 const utils = require('../utils')
 const state = require('../state');
 

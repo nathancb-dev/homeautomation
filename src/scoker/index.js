@@ -1,24 +1,28 @@
 const socketio = require('socket.io');
 const socketAuth = require('./socketAuth');
-const socketManager = require('./socketManager');
 
-let io;
+let sio;
 
 const startServer = appServer => {
 
-    io = new socketio.Server(appServer);
+    sio = new socketio.Server(appServer);
 
-    io.use(socketAuth)
-        .on('connection', socketManager);
+    sio.use(socketAuth)
 
-    console.log("Socket io OK")
+    console.log("Socket io server instantiated");
 }
 
-const getIo = () => {
-    return io;
+const addManager = () => {
+    sio.on('connection', require('./socketManager'));
+    console.log("Socket io manager added");
+}
+
+const io = () => {
+    return sio;
 }
 
 module.exports = {
     startServer,
-    getIo
+    addManager,
+    io
 };
