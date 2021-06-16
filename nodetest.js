@@ -21,4 +21,4 @@ socket.on('has/b/device/lamp1', (value) => {
     console.log(value)
 });
 
-socket.emit('has/mqtt/teste', { topic: "has/opa", payload: "teste" });
+socket.emit('has/mqtt', { topic: "has/opa", payload: "teste" });

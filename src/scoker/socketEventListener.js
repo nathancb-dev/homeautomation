@@ -6,14 +6,11 @@ let events = {
     }
 }
 
-const mqttPublish = (event, arg) => {
-
-    console.log(arg)
+const mqttPublish = (arg) => {
     if (arg.topic && arg.payload) {
-        console.log(arg)
         aedes.publish({
             cmd: 'publish',
-            qos: 0,
+            qos: (arg.qos ? arg.qos : 0),
             topic: arg.topic,
             payload: arg.payload, //new Buffer.from(arg.payload),
             retain: false
@@ -24,7 +21,7 @@ const mqttPublish = (event, arg) => {
 module.exports = (event, ...args) => {
     if (event === 'has/mqtt') {
 
-        mqttPublish(event, ...args);
+        mqttPublish(...args);
 
     } else {
 

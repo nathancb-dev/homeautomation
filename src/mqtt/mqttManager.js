@@ -17,14 +17,20 @@ module.exports = (aedes) => {
 
     // fired when a client connects
     aedes.on('client', function (client) {
-        console.log('Client Connected: \x1b[33m' + (client ? client.id : client) + '\x1b[0m', 'to broker', aedes.id)
+        console.log('Client Connected: \x1b[33m' + (client ? client.id : client) + '\x1b[0m', 'to broker', aedes.id);
+        state.mqtt.clientConnected({
+            id: client.id
+        });
     })
 
     // fired when a client disconnects
     aedes.on('clientDisconnect', function (client) {
         if (!client) return;
 
-        state.setDeviceDisconnected(client.id)
+        state.devices.deviceDisconnected(client.id);
+        state.mqtt.clientDisconnected({
+            id: client.id
+        });
 
         console.log('Client Disconnected: \x1b[31m' + (client ? client.id : client) + '\x1b[0m', 'to broker', aedes.id)
     })
@@ -61,7 +67,7 @@ module.exports = (aedes) => {
 
             switch (thingPublishValue.type) {
                 case 'r' || 'd':
-                    state.setDeviceConnected(client.id, thingPublishValue.deviceInfoId);
+                    state.devices.deviceConnected(client.id, thingPublishValue.deviceInfoId);
                     break;
             }
 
