@@ -2,7 +2,8 @@ const aedes = require('aedes')();
 const aedesServer = require('net').createServer(aedes.handle);
 
 const startServer = () => {
-    aedesServer.listen(1883, () => { console.log("MQTT server started at port 1883.") });
+    const mqtt_port = process.env.MQTT_PORT ? process.env.MQTT_PORT : 1883;
+    aedesServer.listen(mqtt_port, () => { console.log(`MQTT server started at port ${mqtt_port}. mqtt://localhost:${mqtt_port}`) });
     console.log("Aedes mqtt server instantiated");
 }
 

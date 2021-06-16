@@ -23,5 +23,5 @@ module.exports = async () => {
         await System.findOneAndUpdate({}, { user: user._id });
     }
 
-    console.log("Inital data ok");
+    console.log("Initial database data OK");
 }

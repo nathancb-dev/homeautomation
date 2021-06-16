@@ -5,9 +5,9 @@ mongoose.set('useUnifiedTopology', true);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 
-mongoose.connect("mongodb://localhost/homeautomation")
+mongoose.connect(process.env.MONGO_URL)
     .then(() => {
-        console.log(`connection to database established`)
+        console.log(`Connection to MongoDB established`)
     }).catch(err => {
         console.log(`db error ${err.message}`);
         process.exit(-1)

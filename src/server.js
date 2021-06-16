@@ -1,7 +1,9 @@
-const express = require("express");
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
 const http = require('http');
-const socker = require("./scoker");
-const mqtt = require("./mqtt");
+const socker = require('./scoker');
+const mqtt = require('./mqtt');
 
 const app = express();
 const appServer = http.createServer(app);
@@ -17,8 +19,18 @@ app.use(express.urlencoded({ extended: true }));
 require('./serverStartFunction')();
 require('./controllers')(app);
 
-app.get("/", (req, res) => {
-    res.send("OK");
-})
+if (process.env.NODE_ENV === "prd") {
 
-appServer.listen(3000, () => { console.log("HTTP/WS server stared at port 3000. http://localhost:3000") });
+    app.get("/", (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+        res.send({ server: "OK" });
+    });
+
+    app.use(express.static(path.resolve(__dirname, '../client-test/build')));
+
+}
+
+const server_port = process.env.SERVER_PORT ? process.env.SERVER_PORT : 3000;
+appServer.listen(server_port, () => {
+    console.log(`HTTP/WS server stared at port ${server_port}. http://localhost:${server_port}`)
+});
