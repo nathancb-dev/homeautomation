@@ -112,7 +112,7 @@ Build and start server
 # navigate to project folder
 cd homeautomation-server
 
-# install server depedencies
+# install server/client depedencies and build
 npm run build
 
 # run server
