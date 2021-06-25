@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === "prd") {
 
 }
 
-const server_port = process.env.SERVER_PORT ? process.env.SERVER_PORT : 3000;
+const server_port = process.env.NODE_ENV === "prd" ? 80 : process.env.DEV_SERVER_PORT ? process.env.DEV_SERVER_PORT : 3001;
 appServer.listen(server_port, () => {
     console.log(`HTTP/WS server stared at port ${server_port}. http://localhost:${server_port}`)
 });

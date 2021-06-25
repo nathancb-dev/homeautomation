@@ -1,5 +1,5 @@
 
-Home Automation system
+HAS - Home Automation system
 =============================
 
 ## Requirements
@@ -14,17 +14,13 @@ Home Automation system
 cd homeautomation-server
 
 # install server depedencies
-npm install
-# or
-npm i
+npm install # or npm i
 
 # react client
 cd client
 
 # install client depedencies
-npm install
-# or
-npm i
+npm install # or npm i
 ```
 
 ## .env
@@ -37,8 +33,7 @@ npm i
 ```sh
 NODE_ENV=<dev> or <prd> :dev
 MONGO_URL=<mongodb_url>
-SERVER_PORT=<port:3000>
-REACT_DEV_SERVER_PORT=<port:3001>
+DEV_SERVER_PORT=<port:3001>
 MQTT_PORT=<port:1883>
 ```
 
@@ -47,8 +42,7 @@ MQTT_PORT=<port:1883>
 ```sh
 NODE_ENV=dev
 MONGO_URL=mongodb://localhost/homeautomation
-SERVER_PORT=3000
-REACT_DEV_SERVER_PORT=3001
+DEV_SERVER_PORT=3001
 MQTT_PORT=1883
 ```
 
@@ -62,6 +56,10 @@ npm start
 
 ### Client WEB server
 
+Obs: The react server always starts in port 3000
+
+If the API server and the react server are started, the api can be tested through the react server port
+
 ```bash
 # navigate to client folder
 cd client
@@ -70,7 +68,7 @@ cd client
 npm start
 ```
 
-> If the SERVER_PORT in .env is changed, it must also be changed in the `proxy` variable in `package.json` in `client` folder
+> If the DEV_SERVER_PORT in .env is changed, it must also be changed in the `proxy` variable in `package.json` in `client` folder
 
 ```javascript
 // client/package.json
@@ -79,7 +77,7 @@ npm start
     "scripts": {
         ...
     },
-    "proxy": "http://localhost:<port:3000>",
+    "proxy": "http://localhost:<port:3001>",
 ...
 ```
 
