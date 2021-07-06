@@ -78,7 +78,7 @@ None
 
 #### Response
 
-```json
+```javascript
 {
   "room": {
     "things": [<ThingStructure>],
