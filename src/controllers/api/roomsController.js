@@ -165,7 +165,7 @@ router.delete('/', async (req, res) => {
 
     try {
 
-        const room = await Role.findByIdAndDelete(_id).populate(['roles', 'things']);
+        const room = await Room.findByIdAndDelete(_id).populate(['roles', 'things']);
 
         if (!room)
             return res.status(400).send({ code: '21', err: 'Room not found' });
