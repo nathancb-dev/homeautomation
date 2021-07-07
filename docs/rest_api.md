@@ -3,7 +3,7 @@ HAS - Home Automation system - REST API
 
 ### Observation
 
-> All database models have the `_id` and `createdAt` fields on their return, with only the `_id` field being informed in the request
+> All database models have the `_id`, `createdAt` and `__v` fields on their return, with only the `_id` field being informed in the request
 
 #### Example FooStructure / BooStructure
 
@@ -82,7 +82,7 @@ Response
     "field_2": "value",
     "field_3": "value",
     "createdAt", "date",
-    "__v", 0
+    "__v": 0
 }
 
 /**/ [FooStructure] /* represents on response */
@@ -93,7 +93,7 @@ Response
     "field_2": "value",
     "field_3": "value",
     "createdAt", "date",
-    "__v", 0
+    "__v": 0
   },
   ...
 ]
@@ -302,7 +302,7 @@ Request
 RoomStructure
 ```
 
-Response (RoomStructure)
+Response
 
 ```javascript
 {
@@ -338,7 +338,7 @@ Response
 
 ```javascript
 {
-  "room": [RoomStructure]
+  "room": RoomStructure
 }
 ```
 
@@ -377,7 +377,7 @@ Response
 
 ```javascript
 {
-  "room": [RoomStructure]
+  "room": RoomStructure
 }
 ```
 
@@ -398,7 +398,7 @@ Response
 
 ```javascript
 {
-  "room": [RoomStructure]
+  "room": RoomStructure
 }
 ```
 
