@@ -31,8 +31,8 @@ npm install # or npm i
 \:default_value
 
 ```sh
-NODE_ENV=<dev> or <prd> :dev
-MONGO_URL=<mongodb_url>
+NODE_ENV=<dev> or <prd> :prd
+MONGO_URL=<mongodb_url:mongodb://localhost/homeautomation>
 DEV_SERVER_PORT=<port:3001>
 MQTT_PORT=<port:1883>
 ```
@@ -40,7 +40,7 @@ MQTT_PORT=<port:1883>
 Example
 
 ```sh
-NODE_ENV=dev
+NODE_ENV=prd
 MONGO_URL=mongodb://localhost/homeautomation
 DEV_SERVER_PORT=3001
 MQTT_PORT=1883
@@ -100,12 +100,6 @@ Example
 
 ## Build to production server
 
-Change `NODE_ENV` in `.env` file to "`prd`"
-
-```sh
-NODE_ENV=prd
-```
-
 Build and start server
 
 ```bash
@@ -117,4 +111,10 @@ npm run build
 
 # run server
 npm start
+```
+
+If in production `.env` is being used, `NODE_ENV` must be changed to "`prd`" or deleted for the server to use the default option ("`prd`")
+
+```sh
+NODE_ENV=prd
 ```
