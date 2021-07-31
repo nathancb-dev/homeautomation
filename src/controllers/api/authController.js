@@ -36,7 +36,7 @@ router.post('/authenticate', async (req, res) => {
         });
 
     } catch (err) {
-
+        return res.status(400).send({ code: '28', err: 'Authentication failed' });
     }
 
 });

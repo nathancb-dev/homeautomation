@@ -25,3 +25,4 @@
 25 The system role can't be deleted
 26 The system user can't be deleted
 27 The system role can't be removed from system user
+28 Authentication failed
