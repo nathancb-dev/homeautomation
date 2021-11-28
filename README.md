@@ -40,7 +40,7 @@ MQTT_PORT=<port:1883>
 Example
 
 ```sh
-NODE_ENV=prd
+NODE_ENV=dev
 MONGO_URL=mongodb://localhost/homeautomation
 DEV_SERVER_PORT=3001
 MQTT_PORT=1883
