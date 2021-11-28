@@ -1,5 +1,9 @@
 require('dotenv').config();
+
+console.log('\n ENV - ' + (!process.env.NODE_ENV || process.env.NODE_ENV === "prd" ? 'PRD' : 'DEV') + '\n');
+
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const socker = require('./scoker');
@@ -21,12 +25,33 @@ require('./controllers')(app);
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "prd") {
 
-    app.get("/", (req, res) => {
-        res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-        res.send({ server: "OK" });
-    });
+    try {
 
-    app.use(express.static(path.resolve(__dirname, '../client-test/build')));
+        let path_index = path.resolve(__dirname, '../client/build', 'index.html');
+
+        if (fs.existsSync(path_index)) {
+
+            app.get("/", (req, res) => {
+                res.sendFile(path_index);
+            });
+
+        }else{
+
+            console.error('PRD - FILE: index.html file not found (Build file and restart server): ' + path_index);
+
+            app.get("/", (req, res) => {
+                res.send({error: 'index.html file not found'});
+            });
+
+            app.use(express.static(path.resolve(__dirname, '../client-test/build')));
+
+        }
+
+      } catch(err) {
+
+        console.error(err);
+
+      }
 
 }
 

@@ -13,7 +13,7 @@ const mqttPublish = (arg) => {
             qos: (arg.qos ? arg.qos : 0),
             topic: arg.topic,
             payload: arg.payload, //new Buffer.from(arg.payload),
-            retain: false
+            retain: (arg.retain ? true : false) // default false
         });
     }
 }

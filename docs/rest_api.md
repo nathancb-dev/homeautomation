@@ -152,7 +152,7 @@ Response
 ```javascript
 {
   "filter": { // just {} empty for search all
-     // mongoDB parameters for search (see mongodb Model.find docs)
+     // mongoDB parameters for search (see mongodb Model.find docs (https://mongoosejs.com/docs/api/model.html#model_Model.find))
   }
 }
 ```
